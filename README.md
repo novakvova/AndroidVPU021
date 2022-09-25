@@ -19,7 +19,9 @@ dotnet ef --info
 3. Ставимо пакети і додаємо міграцію. Перейти в папку `Web.Pizza/Web.Pizza`:
 
 ```
-`dotnet ef migrations add "Init Database" -c AppEFContext -p ../Data.Pizza/Data.Pizza.csproj -s Web.Pizza.csproj`
+dotnet ef migrations add "Init Database" -c AppEFContext -p ../Data.Pizza/Data.Pizza.csproj -s Web.Pizza.csproj
+
+dotnet ef database update -c AppEFContext -p ../Data.Pizza/Data.Pizza.csproj -s Web.Pizza.csproj
 
 ```
 
