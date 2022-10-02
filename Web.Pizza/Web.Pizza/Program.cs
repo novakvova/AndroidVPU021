@@ -1,5 +1,7 @@
 using Data.Pizza;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Web.Pizza.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseAuthorization();
+
+var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
+if(!Directory.Exists(dir))
+{
+    Directory.CreateDirectory(dir);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider=new PhysicalFileProvider(dir),
+    RequestPath="/images"
+});
+
+app.SeedData();
 
 app.MapControllers();
 

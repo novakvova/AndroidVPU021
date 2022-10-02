@@ -25,7 +25,7 @@ dotnet ef database update -c AppEFContext -p ../Data.Pizza/Data.Pizza.csproj -s 
 
 ```
 
-2. Установка ASP.NET core 6.0 або вище - https://dot.net
+4. Перейти в папку `Web.Pizza/Web.Pizza`. Установка ASP.NET core 6.0 або вище - https://dot.net
 
 ```
 dotnet restore
@@ -33,7 +33,7 @@ dotnet build
 dotnet watch run
 ```
 
-3. Вікриваємо http://localhost:5000 у веб браузері.
+5. Вікриваємо http://localhost:5000 у веб браузері.
 
 
 
