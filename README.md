@@ -35,5 +35,60 @@ dotnet watch run
 
 5. Вікриваємо http://localhost:5000 у веб браузері.
 
+6. Публікація проекта. Переходимо в папку Web.Pizza/Web.Pizza
+
+```
+dotnet publish
+dotnet Web.Pizza.dll
+dotnet Web.Pizza.dll --urls=https://localhost:1632
+systemctl enable vpu021.novakvova.com
+systemctl start vpu021.novakvova.com
+systemctl status vpu021.novakvova.com
+```
+
+7. vpu021.novakvova.com.service
+
+```
+[Unit]
+Description=vpu021.novakvova.com
+
+[Service]
+WorkingDirectory=/var/www/android/vpu021.novakvova.com
+ExecStart=/usr/bin/dotnet Web.Pizza.dll --urls=https://localhost:1632
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-example
+User=root
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+```
+
+8. Пnginx config
+
+```
+server {
+server_name   vpu021.novakvova.com *.vpu021.novakvova.com;
+location / {
+        proxy_pass         https://localhost:1632;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection keep-alive;
+        proxy_set_header   Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+8. Перезапускаємо nginx `systemctl restart nginx` `systemctl status nginx`
+
+9. Додаємо ssl сетрифікат `certbot`
+
 
 
