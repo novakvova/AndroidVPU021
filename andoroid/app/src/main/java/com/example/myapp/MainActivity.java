@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
                 List<CategoryItemDTO> data = response.body();
                 CategoryItemDTO one = data.get(0);
+                //one.
             }
 
             @Override

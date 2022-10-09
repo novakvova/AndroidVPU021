@@ -1,5 +1,6 @@
 ﻿using Data.Pizza;
 using Data.Pizza.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Pizza.Services
 {
@@ -11,6 +12,7 @@ namespace Web.Pizza.Services
                 .GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppEFContext>();
+                context.Database.Migrate();
                 if(!context.Categories.Any())
                 {
                     CategoryEntity best = new CategoryEntity()
