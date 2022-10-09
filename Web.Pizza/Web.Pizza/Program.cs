@@ -1,8 +1,14 @@
 using Data.Pizza;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using System;
 using Web.Pizza.Mapper;
+using Web.Pizza.Models;
 using Web.Pizza.Services;
+using Web.Pizza.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +23,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(AppMapProfile));
+
+#pragma warning disable CS0618 // Type or member is obsolete
+builder.Services.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
+#pragma warning restore CS0618 // Type or member is obsolete
 
 builder.Services.AddCors();
 

@@ -10,6 +10,9 @@ namespace Web.Pizza.Mapper
         {
             CreateMap<CategoryEntity, CategoryItemViewModel>()
                 .ForMember(x=>x.Image, opt=>opt.MapFrom(x=>$"/images/{x.Image}"));
+
+            CreateMap<CategoryCreateItemVM, CategoryEntity>()
+                .ForMember(x => x.Image, opt => opt.Ignore());
         }
     }
 }
