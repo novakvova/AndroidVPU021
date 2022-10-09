@@ -33,11 +33,19 @@ namespace Web.Pizza.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CategoryCreateItemVM model)
         {
-            var category = _mapper.Map<CategoryEntity>(model);
-            category.Image = ImageWorker.SaveImage(model.ImageBase64);
-            category.DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-            _appEFContext.Categories.Add(category);
-            _appEFContext.SaveChanges();
+            try
+            {
+                var category = _mapper.Map<CategoryEntity>(model);
+                category.Image = ImageWorker.SaveImage(model.ImageBase64);
+                category.DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+                _appEFContext.Categories.Add(category);
+                _appEFContext.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            
             return Ok();
         }
 

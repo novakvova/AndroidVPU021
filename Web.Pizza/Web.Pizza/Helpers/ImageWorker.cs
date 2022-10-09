@@ -27,22 +27,23 @@ namespace Web.Pizza.Helpers
 
         public static string SaveImage(string imageBase64)
         {
-            string base64 = imageBase64;
-            if (base64.Contains(","))
-                base64 = base64.Split(',')[1];
+            
 
-            var img = base64.FromBase64StringToImage();
             string fileName = Path.GetRandomFileName() + ".jpg";
-            string dirSave = Path.Combine(Directory.GetCurrentDirectory(), "images", fileName);
-
             try
             {
+                string base64 = imageBase64;
+                if (base64.Contains(","))
+                    base64 = base64.Split(',')[1];
+
+                var img = base64.FromBase64StringToImage();
+                string dirSave = Path.Combine(Directory.GetCurrentDirectory(), "images", fileName);
                 var saveImage = CompressImage(img, 1200, 1200, false);
                 saveImage.Save(dirSave, ImageFormat.Jpeg);
             }
             catch
             {
-                fileName = "";
+                throw new Exception("Файл не вдалося зберегти!");
             }
             return fileName;
         }
