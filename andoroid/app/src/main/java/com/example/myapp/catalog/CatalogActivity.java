@@ -37,7 +37,7 @@ public class CatalogActivity extends BaseActivity {
         rcvCategories = findViewById(R.id.rcvCategories);
         rcvCategories.setHasFixedSize(true);
         rcvCategories.setLayoutManager(
-                new GridLayoutManager(this,2, LinearLayoutManager.VERTICAL,false));
+                new GridLayoutManager(this,1, LinearLayoutManager.VERTICAL,false));
         requestServer();
     }
     private void requestServer()
