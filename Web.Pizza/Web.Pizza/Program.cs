@@ -1,4 +1,5 @@
 using Data.Pizza;
+using Data.Pizza.Entities.Identity;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +16,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppEFContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 5;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase= false;
+
+}).AddEntityFrameworkStores<AppEFContext>().AddDefaultTokenProviders();
 // Add services to the container.
 
 builder.Services.AddControllers();
