@@ -23,6 +23,7 @@ namespace Web.Pizza.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> List()
         {
+            Thread.Sleep(2000);
             var model = _appEFContext.Categories
                 .Where(x=>!x.IsDelete)
                 .OrderBy(c => c.Priority)

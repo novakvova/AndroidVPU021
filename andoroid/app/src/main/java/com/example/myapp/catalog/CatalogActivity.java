@@ -17,6 +17,7 @@ import com.example.myapp.catalog.categorycard.CategoriesAdapter;
 import com.example.myapp.constants.Urls;
 import com.example.myapp.dto.category.CategoryItemDTO;
 import com.example.myapp.service.CategoryNetwork;
+import com.example.myapp.utils.CommonUtils;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class CatalogActivity extends BaseActivity {
     }
     private void requestServer()
     {
+        CommonUtils.showLoading();
         CategoryNetwork
                 .getInstance()
                 .getJSONApi()
@@ -52,6 +54,7 @@ public class CatalogActivity extends BaseActivity {
                         List<CategoryItemDTO> data = response.body();
                         categoriesAdapter = new CategoriesAdapter(data);
                         rcvCategories.setAdapter(categoriesAdapter);
+                        CommonUtils.hideLoading();
                     }
 
                     @Override
