@@ -3,6 +3,7 @@ using Data.Pizza;
 using Data.Pizza.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.Pizza.Helpers;
 using Web.Pizza.Models;
 
@@ -24,10 +25,10 @@ namespace Web.Pizza.Controllers
         public async Task<IActionResult> List()
         {
             Thread.Sleep(2000);
-            var model = _appEFContext.Categories
-                .Where(x=>!x.IsDelete)
+            var model = await _appEFContext.Categories
+                .Where(x => !x.IsDelete)
                 .OrderBy(c => c.Priority)
-                .Select(x => _mapper.Map<CategoryItemViewModel>(x)).ToList();
+                .Select(x => _mapper.Map<CategoryItemViewModel>(x)).ToListAsync();
             return Ok(model);
         }
 
@@ -39,8 +40,8 @@ namespace Web.Pizza.Controllers
                 var category = _mapper.Map<CategoryEntity>(model);
                 category.Image = ImageWorker.SaveImage(model.ImageBase64);
                 category.DateCreated = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-                _appEFContext.Categories.Add(category);
-                _appEFContext.SaveChanges();
+                await _appEFContext.Categories.AddAsync(category);
+                await _appEFContext.SaveChangesAsync();
             }
             catch(Exception ex)
             {

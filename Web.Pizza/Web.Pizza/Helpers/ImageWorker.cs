@@ -141,7 +141,7 @@ namespace Web.Pizza.Helpers
                     System.IO.File.Delete(file);
                 }
             }
-            catch (Exception ex)
+            catch
             { }
         }
     }
