@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
 
             case R.id.m_create:
                 try {
-                    intent = new Intent(BaseActivity.this, ChangeImageActivity.class);
+                    intent = new Intent(BaseActivity.this, CreateActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception ex) {
