@@ -4,8 +4,14 @@
         android:id="@+id/m_home"
         android:title="Додому"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/m_catalog"
         android:title="Каталог"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/m_create"
+        android:title="Додати"
         app:showAsAction="never" />
 </menu>

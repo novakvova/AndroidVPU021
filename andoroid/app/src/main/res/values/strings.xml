@@ -9,4 +9,6 @@
 
     <string name="hello_first_fragment">Привіт! Перша сторінка</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="category_name">Назва</string>
+    <string name="selectImage">Обрати фото</string>
 </resources>

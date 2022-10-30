@@ -52,6 +52,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
+    implementation 'com.oginotihiro:cropview:1.0.0'
+
 
 
 }

@@ -47,6 +47,16 @@ public class BaseActivity extends AppCompatActivity {
                     System.out.println("Problem " + ex.getMessage());
                 }
                 return true;
+
+            case R.id.m_create:
+                try {
+                    intent = new Intent(BaseActivity.this, ChangeImageActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception ex) {
+                    System.out.println("Problem " + ex.getMessage());
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
