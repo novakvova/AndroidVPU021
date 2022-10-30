@@ -6,19 +6,93 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class CreateActivity extends AppCompatActivity {
+import com.example.myapp.catalog.CatalogActivity;
+import com.example.myapp.catalog.categorycard.CategoriesAdapter;
+import com.example.myapp.dto.category.CategoryCreateDTO;
+import com.example.myapp.dto.category.CategoryItemDTO;
+import com.example.myapp.service.CategoryNetwork;
+import com.example.myapp.utils.CommonUtils;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class CreateActivity extends BaseActivity {
 
     int SELECT_CROPPER = 300;
+    Uri uri;
     ImageView IVPreviewImage;
+    private TextInputEditText txtCategoryName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
         IVPreviewImage=findViewById(R.id.IVPreviewImage);
+        txtCategoryName=findViewById(R.id.txtCategoryName);
+    }
+
+
+    public void handleCreateCategoryClick(View view)
+    {
+        CommonUtils.setContext(this);
+        CommonUtils.showLoading();
+        CategoryCreateDTO categoryCreateDTO=new CategoryCreateDTO();
+        categoryCreateDTO.setName(txtCategoryName.getText().toString());
+        categoryCreateDTO.setImageBase64(uriGetBase64(uri));
+        CategoryNetwork
+                .getInstance()
+                .getJSONApi()
+                .create(categoryCreateDTO)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        CommonUtils.hideLoading();
+                        Intent intent = new Intent(CreateActivity.this, CatalogActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        CommonUtils.hideLoading();
+                    }
+                });
+    }
+
+    private String uriGetBase64(Uri uri)
+    {
+        try{
+            Bitmap bitmap= null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // initialize byte stream
+            ByteArrayOutputStream stream=new ByteArrayOutputStream();
+            // compress Bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+            // Initialize byte array
+            byte[] bytes=stream.toByteArray();
+            // get base64 encoded string
+            String sImage= Base64.encodeToString(bytes, Base64.DEFAULT);
+            return sImage;
+        }
+        catch (Exception ex) {
+            return null;
+        }
+
     }
 
     public void handleSelectImageClick(View view)
@@ -32,7 +106,7 @@ public class CreateActivity extends AppCompatActivity {
 
         if (resultCode == SELECT_CROPPER) {
             //String base64 = data.getStringExtra("base64");
-            Uri uri = (Uri) data.getParcelableExtra("croppedUri");
+            uri = (Uri) data.getParcelableExtra("croppedUri");
             IVPreviewImage.setImageURI(uri);
             int a = 12;
             a = 16;
