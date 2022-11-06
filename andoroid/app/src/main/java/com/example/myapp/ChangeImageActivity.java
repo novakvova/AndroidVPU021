@@ -42,7 +42,7 @@ private CropView cropView;
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             CommonUtils.showLoading();
             Uri selectedImage = data.getData();
-            CropView cropView = (CropView) findViewById(R.id.cropView);
+            //CropView cropView = (CropView) findViewById(R.id.cropView);
             cropView.of(selectedImage).asSquare().initialize(this);
 //            cropView.of(selectedImage)
 //                    //.withAspect(x, y)

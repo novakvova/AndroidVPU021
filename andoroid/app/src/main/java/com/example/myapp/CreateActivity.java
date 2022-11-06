@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp.catalog.CatalogActivity;
@@ -19,6 +20,7 @@ import com.example.myapp.dto.category.CategoryItemDTO;
 import com.example.myapp.service.CategoryNetwork;
 import com.example.myapp.utils.CommonUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,43 +33,51 @@ import retrofit2.Response;
 public class CreateActivity extends BaseActivity {
 
     int SELECT_CROPPER = 300;
-    Uri uri;
+    Uri uri=null;
     ImageView IVPreviewImage;
     private TextInputEditText txtCategoryName;
+    private TextInputLayout textFieldCategoryName;
+    private TextView imageError;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
         IVPreviewImage=findViewById(R.id.IVPreviewImage);
         txtCategoryName=findViewById(R.id.txtCategoryName);
+        textFieldCategoryName = findViewById(R.id.textFieldCategoryName);
+        imageError = findViewById(R.id.textImageError);
     }
 
 
     public void handleCreateCategoryClick(View view)
     {
-        CommonUtils.setContext(this);
-        CommonUtils.showLoading();
+
         CategoryCreateDTO categoryCreateDTO=new CategoryCreateDTO();
         categoryCreateDTO.setName(txtCategoryName.getText().toString());
         categoryCreateDTO.setImageBase64(uriGetBase64(uri));
-        CategoryNetwork
-                .getInstance()
-                .getJSONApi()
-                .create(categoryCreateDTO)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        CommonUtils.hideLoading();
-                        Intent intent = new Intent(CreateActivity.this, CatalogActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+        if(validationFields(categoryCreateDTO)) {
+            CommonUtils.setContext(this);
+            CommonUtils.showLoading();
+            CategoryNetwork
+                    .getInstance()
+                    .getJSONApi()
+                    .create(categoryCreateDTO)
+                    .enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            CommonUtils.hideLoading();
+                            Intent intent = new Intent(CreateActivity.this, CatalogActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        CommonUtils.hideLoading();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            CommonUtils.hideLoading();
+                        }
+                    });
+        }
     }
 
     private String uriGetBase64(Uri uri)
@@ -111,6 +121,19 @@ public class CreateActivity extends BaseActivity {
             int a = 12;
             a = 16;
         }
+    }
+
+    private boolean validationFields(CategoryCreateDTO createCategoryDTO) {
+        textFieldCategoryName.setError("");
+        if (createCategoryDTO.getName().equals("")) {
+            textFieldCategoryName.setError("Вкажіть Назву категорії");
+            return false;
+        }
+        if (createCategoryDTO.getImageBase64() == null) {
+            imageError.setVisibility(View.VISIBLE);
+            return false;
+        }
+        return true;
     }
 
 }

@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapp.account.LoginActivity;
 import com.example.myapp.catalog.CatalogActivity;
 import com.example.myapp.utils.CommonUtils;
 
@@ -51,6 +52,16 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.m_create:
                 try {
                     intent = new Intent(BaseActivity.this, CreateActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception ex) {
+                    System.out.println("Problem " + ex.getMessage());
+                }
+                return true;
+
+            case R.id.m_login:
+                try {
+                    intent = new Intent(BaseActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception ex) {

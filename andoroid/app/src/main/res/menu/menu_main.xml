@@ -14,4 +14,9 @@
         android:id="@+id/m_create"
         android:title="Додати"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/m_login"
+        android:title="Вхід"
+        app:showAsAction="never" />
 </menu>

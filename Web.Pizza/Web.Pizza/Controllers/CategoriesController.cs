@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Pizza;
 using Data.Pizza.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ namespace Web.Pizza.Controllers
                 .Select(x => _mapper.Map<CategoryItemViewModel>(x)).ToListAsync();
             return Ok(model);
         }
-
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CategoryCreateItemVM model)
         {
